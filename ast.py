@@ -1,4 +1,7 @@
-class Number():
+from fpdf import FPDF
+from rply.token import BaseBox
+
+class Number(BaseBox):
     def __init__(self, value):
         self.value = value
 
@@ -6,47 +9,72 @@ class Number():
         return int(self.value)
 
 
-# generate pdf for the program
-class Print():
-	
+class Total(BaseBox):
+	def __init__(self, total):
+		self.total = total
 
 
-class Total():
-	def _init_(self, num):
-		self.num = num
-	
+class Image(BaseBox):
+	def __init__(self, image):
+		self.image = image
 
-class TernaryOp():
-    def __init__(self, percent, left, right):
-        self.percent = percent
-        self.left = left
-        self.right = right
-
-
-class BinaryOp():
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
-
-
-class Position(BinaryOp):
 	def eval(self):
-		return self.left.eval() 
+		return (self.image)
 
 
-class Sum(BinaryOp):
-    def eval(self):
-        return self.left.eval() + self.right.eval()
+class Position(BaseBox):
+	def __init__(self, left_pos, right_pos):
+		self.left_pos = left_pos
+		self.right_pos = right_pos
 
 
-class Sub(BinaryOp):
-    def eval(self):
-        return self.left.eval() - self.right.eval()
+class Dimensions(object):
+	def __init__(self, height, width):
+		self.height = height
+		self.width = width
+		
+
+class Move(BaseBox):
+	def __init__(self, percent_move_x, percent_move_y, move_left, move_right):
+		self.percent_move_x = percent_move_x
+		self.percent_move_y = percent_move_y
+		self.move_left = move_left
+		self.move_right = move_right
 
 
-class Print():
-    def __init__(self, value):
-        self.value = value
+class Scale(BaseBox):
+	def __init__(self, percent_scale, scale_left, scale_right):
+		self.percent_scale = percent_scale
+		self.scale_left = scale_left
+		self.scale_right = scale_right
 
-    def eval(self):
-        print(self.value.eval())
+
+# generate pdf for the program
+class Print(Total, Position, Image, Move, Scale):
+	def __init__(self, total, left_pos, right_pos, percent_scale, scale_left, scale_right, percent_move_x, percent_move_y, move_left, move_right, image, height, width):
+		Image.__init__(self, image)
+		Position.__init__(self, left_pos, right_pos)
+		Move.__init__(self, percent_move_x, percent_move_y, move_left, move_right)
+		Scale.__init__(self, percent_scale, scale_left, scale_right)
+		Total.__init__(self, total)
+		Dimensions.__init__(self, height, width)
+		
+	def eval(self):
+		image = self.image
+		pos_x = self.left_pos
+		pos_y = self.right_pos
+		width = self.width
+		height = self.height
+		for i in range(1,self.total+1):
+			if(i>= self.move_left and i <= self.move_right):
+				pos_x = pos_x + self.percent_move_x
+				pos_y = pos_y + self.percent_move_y
+			if(i>= self.scale_left and i<=self.scale_right):
+				width = width + self.percent_scale
+				height = height + self.percent_scale
+			pdf = FPDF()
+			pdf.add_page()
+			pdf.image(image, x = pos_x, y = pos_y, w = width, h = height, type = '', link = '')
+			output = 'flipbook' + str(i) + '.pdf'
+			pdf.output(output, 'F')
+			print('done')

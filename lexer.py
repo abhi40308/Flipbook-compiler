@@ -16,10 +16,12 @@ class Lexer():
         self.lexer.add('SCALE', r'scale')
         # Move
         self.lexer.add('MOVE', r'move')
-        # Range
-        self.lexer.add('RANGE', r'range')
+        # Dimensions
+        self.lexer.add('DIMENSIONS', r'dimensions')
         # Total
         self.lexer.add('TOTAL', r'total')
+        # Print
+        self.lexer.add('PRINT', r'print')
         # Parenthesis
         self.lexer.add('OPEN_PAREN', r'\(')
         self.lexer.add('CLOSE_PAREN', r'\)')
