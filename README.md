@@ -31,3 +31,4 @@ Note: This repo contains my attempt to build a compiler using python, for a lang
 * Run `main.py`
   
 ##### Output: 
+![demo](demo.gif)
