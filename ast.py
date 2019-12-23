@@ -1,5 +1,7 @@
 from fpdf import FPDF
 from rply.token import BaseBox
+from PyPDF2 import PdfFileMerger
+import os
 
 class Number(BaseBox):
     def __init__(self, value):
@@ -65,6 +67,8 @@ class Print(Total, Position, Image, Move, Scale):
 		pos_y = self.right_pos
 		width = self.width
 		height = self.height
+		output_path = 'flipbook.pdf'
+		pdf_merger = PdfFileMerger()
 		for i in range(1,self.total+1):
 			if(i>= self.move_left and i <= self.move_right):
 				pos_x = pos_x + self.percent_move_x
@@ -75,6 +79,11 @@ class Print(Total, Position, Image, Move, Scale):
 			pdf = FPDF()
 			pdf.add_page()
 			pdf.image(image, x = pos_x, y = pos_y, w = width, h = height, type = '', link = '')
-			output = 'flipbook' + str(i) + '.pdf'
+			output = 'dummy_flipbook.pdf'
 			pdf.output(output, 'F')
+			pdf_merger.append(output)
+			os.remove(output)
 			print('done')
+		with open(output_path, 'wb') as fileobj:
+			pdf_merger.write(fileobj)
+
