@@ -15,21 +15,25 @@ class Parser():
         def program(p):
             return (p[0])
 
-        @self.pg.production('expression : PRINT OPEN_PAREN TOTAL OPEN_PAREN expression CLOSE_PAREN POSITION OPEN_PAREN expression COMMA expression CLOSE_PAREN SCALE OPEN_PAREN expression COMMA expression COMMA expression CLOSE_PAREN MOVE OPEN_PAREN expression COMMA expression COMMA expression COMMA expression CLOSE_PAREN expression DIMENSIONS OPEN_PAREN expression COMMA expression CLOSE_PAREN CLOSE_PAREN')
-        def expression(p): 
-            total = p[4]
-            pos_left = p[8]
-            pos_right = p[10]
-            percent_scale = p[14]
-            scale_left = p[16]
-            scale_right = p[18]
-            percent_move_x = p[22]
-            percent_move_y = p[24]
-            move_left = p[26]
-            move_right = p[28]
-            image = p[30]
-            height = p[33]
-            width = p[35]
+        @self.pg.production('expression : PRINT OPEN_PAREN expression CLOSE_PAREN')
+        def expression(p):
+            return (p[2])
+
+        @self.pg.production('expression : TOTAL OPEN_PAREN expression CLOSE_PAREN POSITION OPEN_PAREN expression COMMA expression CLOSE_PAREN SCALE OPEN_PAREN expression COMMA expression COMMA expression CLOSE_PAREN MOVE OPEN_PAREN expression COMMA expression COMMA expression COMMA expression CLOSE_PAREN expression DIMENSIONS OPEN_PAREN expression COMMA expression CLOSE_PAREN')
+        def expression(p):
+            total = p[2]
+            pos_left = p[6]
+            pos_right = p[8]
+            percent_scale = p[12]
+            scale_left = p[14]
+            scale_right = p[16]
+            percent_move_x = p[20]
+            percent_move_y = p[22]
+            move_left = p[24]
+            move_right = p[26]
+            image = p[28]
+            height = p[31]
+            width = p[33]
             return Print(total, pos_left, pos_right, percent_scale, scale_left, scale_right, percent_move_x, percent_move_y, move_left, move_right, image, height, width)
 
         @self.pg.production('expression : NUMBER')

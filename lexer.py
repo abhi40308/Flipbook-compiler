@@ -9,7 +9,7 @@ class Lexer():
         # Number
         self.lexer.add('NUMBER', r'\d+')
         # Image
-        self.lexer.add('IMAGE', r'[^\s]+(\.(?i)(jpg|png|gif|bmp))')
+        self.lexer.add('IMAGE', r'[^\s]+(\.(?i)(jpg|png|gif|bmp|jpeg))')
         # Position
         self.lexer.add('POSITION', r'position')
         # Scale

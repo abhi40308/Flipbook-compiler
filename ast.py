@@ -67,7 +67,7 @@ class Print(Total, Position, Image, Move, Scale):
 		pos_y = self.right_pos
 		width = self.width
 		height = self.height
-		output_path = 'flipbook.pdf'
+		output_path = "flipbook.pdf"
 		pdf_merger = PdfFileMerger()
 		for i in range(1,self.total+1):
 			if(i>= self.move_left and i <= self.move_right):
